@@ -27,7 +27,7 @@ def createIndexForWeb():
         repo_desc = item['description']
         repo_info_json_url = re.sub('repos_name', repo_name, raw_info_json_url)
         try:
-            repo_info_json = json.loads(urllib.request.urlopen(repo_info_json_url).read().decode('gbk'))
+            repo_info_json = json.loads(urllib.request.urlopen(repo_info_json_url).read().decode('utf-8'))
         except:
             continue
         
@@ -43,7 +43,7 @@ def createIndexForWeb():
             json_item += indent_space + indent_space + "\"" + key + "\":" + "\"" + val + "\",\n"
         json_item = json_item[0:-2]+'\n'
         json_item += indent_space + "},\n"  
-        index_for_web_json += json_item 
+        index_for_web_json += json_item
     index_for_web_json = index_for_web_json[0:-2]
     index_for_web_json += '\n]\n}'
     index_for_web.write(index_for_web_json)  
