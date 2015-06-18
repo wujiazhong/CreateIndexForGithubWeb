@@ -14,7 +14,7 @@ def createIndexForWeb():
     key_list = ['type', 'provider', 'software', 'language', 'category', 'promotion']
     indent_space = '    '
 
-    api_json_data = json.loads(urllib.request.urlopen(api_url).read().decode('gbk'))
+    api_json_data = json.loads(urllib.request.urlopen(api_url).read().decode('utf-8'))
     index_for_web_json = "{\n\"repository_index\":[\n"
     index_for_web = open(index_for_web_path,'w')
 
