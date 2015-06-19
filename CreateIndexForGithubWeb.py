@@ -2,13 +2,10 @@ import urllib.request
 import json
 import re
 
-def createIndexForWeb():
+def createIndexForWeb(index_for_web_path):
     #read name and desc info from api.github.com
-    api_url = "https://api.github.com/orgs/ibmpredictiveanalytics/repos"
+    api_url = "https://api.github.com/orgs/ibmpredictiveanalytics/repos?per_page=1000"
     raw_info_json_url = 'https://raw.githubusercontent.com/IBMPredictiveAnalytics/repos_name/master/info.json'
-
-    #Please use your own path of 'index_for_web.json'
-    index_for_web_path = r'C:\Users\wujz\Desktop\index_for_web.json'
 
     #key_list for repository info.json
     key_list = ['type', 'provider', 'software', 'language', 'category', 'promotion']
@@ -50,4 +47,6 @@ def createIndexForWeb():
     index_for_web.close()
 
 if __name__ == '__main__':
-    createIndexForWeb()
+    #Please use your own path of 'index_for_web.json'
+    index_for_web_path = r'C:\Users\wujz\Desktop\index_for_web.json'
+    createIndexForWeb(index_for_web_path)
