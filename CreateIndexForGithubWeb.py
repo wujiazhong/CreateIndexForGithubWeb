@@ -15,6 +15,7 @@ def createIndexForWeb(index_for_web_path):
     index_for_web_json = "{\n\"repository_index\":[\n"
     index_for_web = open(index_for_web_path,'w')
 
+    print(len(api_json_data))
     for item in api_json_data:
         repo_name = item['name']
         #ignore .io repository
@@ -22,6 +23,7 @@ def createIndexForWeb(index_for_web_path):
             continue
         
         repo_desc = item['description']
+        repo_push_time = item['pushed_at']
         repo_info_json_url = re.sub('repos_name', repo_name, raw_info_json_url)
         try:
             repo_info_json = json.loads(urllib.request.urlopen(repo_info_json_url).read().decode('utf-8'))
@@ -30,7 +32,8 @@ def createIndexForWeb(index_for_web_path):
         
         json_item = indent_space+'{\n'
         json_item += indent_space + indent_space + "\"repository\":" +"\"" + repo_name +"\",\n" 
-        json_item += indent_space + indent_space + "\"description\":" +"\"" + repo_desc +"\",\n"  
+        json_item += indent_space + indent_space + "\"description\":" +"\"" + repo_desc +"\",\n"
+        json_item += indent_space + indent_space + "\"pushed_at\":" +"\"" + repo_push_time +"\",\n" 
         
         for key in key_list:
             if type(repo_info_json[key]) == list:
