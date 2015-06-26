@@ -15,7 +15,6 @@ def createIndexForWeb(index_for_web_path):
     index_for_web_json = "{\n\"repository_index\":[\n"
     index_for_web = open(index_for_web_path,'w')
 
-    print(len(api_json_data))
     for item in api_json_data:
         repo_name = item['name']
         #ignore .io repository
