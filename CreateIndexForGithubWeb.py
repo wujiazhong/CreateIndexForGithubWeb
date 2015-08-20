@@ -1,6 +1,12 @@
 import urllib.request
+import urllib.error
 import json
 import re
+
+UNICODE_ERROR_LIST = []
+HTTP_ERROR_LIST = []
+VALUE_ERROR_LIST = []
+OTHER_ERROR_LIST = []
 
 def createIndexForWeb(index_for_web_path):
     #read name and desc info from api.github.com
@@ -26,7 +32,17 @@ def createIndexForWeb(index_for_web_path):
         repo_info_json_url = re.sub('repos_name', repo_name, raw_info_json_url)
         try:
             repo_info_json = json.loads(urllib.request.urlopen(repo_info_json_url).read().decode('utf-8'))
-        except:
+        except UnicodeDecodeError as e:
+            UNICODE_ERROR_LIST.append(repo_name+"  "+repo_push_time)
+            continue
+        except urllib.error.HTTPError as e:
+            HTTP_ERROR_LIST.append(repo_name+"  "+repo_push_time)
+            continue
+        except ValueError as e:
+            VALUE_ERROR_LIST.append(repo_name+"  "+repo_push_time)
+            continue
+        except Exception as e:
+            OTHER_ERROR_LIST.append(repo_name+"  "+repo_push_time)
             continue
         
         json_item = indent_space+'{\n'
@@ -48,7 +64,15 @@ def createIndexForWeb(index_for_web_path):
     index_for_web.write(index_for_web_json)  
     index_for_web.close()
 
+def printError(error_list, error_msg):
+    for repo_name in error_list:
+        print(error_msg+": "+repo_name)
+
 if __name__ == '__main__':
     #Please use your own path of 'index_for_web.json'
     index_for_web_path = r'C:\Users\wujz\Desktop\index_for_web.json'
     createIndexForWeb(index_for_web_path)
+    printError(UNICODE_ERROR_LIST, "UnicodeDecodeError")
+    printError(HTTP_ERROR_LIST, "HTTPError")
+    printError(VALUE_ERROR_LIST, "ValueError")
+    printError(OTHER_ERROR_LIST, "Other exception")
